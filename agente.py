@@ -4,51 +4,46 @@ from core.db import DatabaseManager
 from core.groq import GroqClient
 from core.utils import validate_sql, identify_table, show_tables, show_updated_table
 
-# === CONFIG ===
+#configuracion
 POSTGRES_URL = st.secrets["POSTGRES_URL"]
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 
-# === CARGA DE PROMPTS ===
+#promts
 with open("prompts/sql_prompt.txt", "r", encoding="utf-8") as f:
     SQL_PROMPT = f.read()
 
 with open("prompts/interpret_prompt.txt", "r", encoding="utf-8") as f:
     INTERPRET_PROMPT = f.read()
 
-# === INSTANCIAS ===
+#inicializacion
 db = DatabaseManager(POSTGRES_URL)
 groq = GroqClient(GROQ_API_KEY)
 
-# === MAIN ===
+#main
 def main():
-    st.set_page_config(page_title="Agente IA Escolar", layout="wide")
-    st.markdown("<h1 style='text-align:center; color:#2E86C1;'>Agente Inteligente Escolar</h1>", unsafe_allow_html=True)
+    st.set_page_config(page_title="Agente de IA", layout="wide")
+    st.markdown("<h1 style='text-align:center; color:#2E86C1;'>Agente Inteligente</h1>", unsafe_allow_html=True)
 
     conn = db.connect()
     if not conn:
         st.stop()
 
-    # === SIDEBAR ===
     with st.sidebar:
         st.markdown("### Tablas disponibles")
         
-        # Botón para recargar
         if st.button("Recargar tablas"):
             st.success("Tablas recargadas")
-            st.rerun()  # ← RECARGA LA APP
-
-        # Mostrar tablas
+            st.rerun()
         show_tables(st, conn)
 
-    # === INPUT ===
-    st.subheader("Escribe tu consulta en lenguaje natural")
+    #entrada
+    st.subheader("Ingresa tu consulta")
     query = st.text_input(
-        "Ej: 'Añade un estudiante llamado Ana López de 20 años'",
-        placeholder="Muestra estudiantes con promedio mayor a 7",
+        "Ejemplo: 'Muestra estudiantes con promedio mayor a 7'",
         key="user_query"
     )
 
-    # === EJECUTAR ===
+    #ejecutar
     if st.button("Ejecutar", type="primary", use_container_width=True) and query.strip():
         with st.spinner("Generando SQL..."):
             sql = groq.generate_sql(query, SQL_PROMPT)
@@ -71,7 +66,7 @@ def main():
                         st.dataframe(df, use_container_width=True)
                         with st.expander("Análisis IA", expanded=True):
                             summary = groq.interpret_results(query, df, 0, False, INTERPRET_PROMPT)
-                            st.markdown(f"**Resumen:** {summary}")
+                            st.markdown(f"{summary}")
                     else:
                         st.warning("Sin resultados.")
             else:

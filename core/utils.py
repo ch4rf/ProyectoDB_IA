@@ -20,7 +20,7 @@ def identify_table(sql: str) -> str | None:
             return t.lower()
     return None
 
-def show_tables(st, conn):  # ← SIN cache_key
+def show_tables(st, conn):  
     tablas = ['estudiantes', 'profesores', 'materias', 'matriculas', 'aulas', 'horarios', 'asistencias', 'examenes', 'pagos']
     for t in tablas:
         with st.expander(f"Vista completa de {t.upper()}", expanded=False):
