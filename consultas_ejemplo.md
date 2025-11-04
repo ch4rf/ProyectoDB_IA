@@ -1,11 +1,12 @@
 # 1. Consulta: 
-`Estudiantes mayores de 17 años` 
+## `Estudiantes mayores de 17 años` 
 ## SQL:
   SELECT nombre, apellido, edad
   FROM estudiantes
   WHERE edad > 17
 
-# 2. Consulta: `Estudiantes con sus calificaciones`
+# 2. Consulta: 
+## `Estudiantes con sus calificaciones`
 ## SQL:
   SELECT estudiantes.nombre, estudiantes.apellido, matriculas.calificacion, materias.nombre as materia
   FROM estudiantes
@@ -13,7 +14,7 @@
   JOIN materias ON matriculas.materia_id = materias.id
 
 # 3. Consulta: 
-`Promedio de calificaciones por materia`
+## `Promedio de calificaciones por materia`
 ## SQL:
   SELECT materias.nombre, AVG(matriculas.calificacion) as promedio
   FROM materias
@@ -21,7 +22,7 @@
   GROUP BY materias.id, materias.nombre
 
 # 4. Consulta:
-`Estudiantes con calificación mayor a 8 en Matemáticas I`
+## `Estudiantes con calificación mayor a 8 en Matemáticas I`
 ## SQL:
   SELECT estudiantes.nombre, estudiantes.apellido, matriculas.calificacion, materias.nombre as materia
   FROM estudiantes
@@ -30,7 +31,7 @@
   WHERE matriculas.calificacion > 8 AND materias.nombre = 'Matemáticas I'
 
 # 5. Consulta: 
-`Top 3 estudiantes con mejor promedio`
+## `Top 3 estudiantes con mejor promedio`
 ## SQL:
   SELECT estudiantes.nombre, estudiantes.apellido, AVG(matriculas.calificacion) as promedio
   FROM estudiantes
@@ -41,7 +42,7 @@
   LIMIT 3
 
 # 6. Consulta: 
-`Cantidad de estudiantes por materia`
+## `Cantidad de estudiantes por materia`
 ## SQL:
   SELECT COUNT(estudiantes.id) as cantidad, materias.nombre
   FROM estudiantes
@@ -50,7 +51,7 @@
   GROUP BY materias.nombre
 
 # 7. Consulta: 
-`Estudiantes que tienen calificación menor a 7 en alguna materia`
+## `Estudiantes que tienen calificación menor a 7 en alguna materia`
 ## SQL:
   SELECT estudiantes.nombre, estudiantes.apellido
   FROM estudiantes
@@ -59,7 +60,7 @@
   WHERE matriculas.calificacion < 7
 
 # 8. Consulta: 
-`Estudiantes inscritos este mes`
+## `Estudiantes inscritos este mes`
 ## SQL:
   SELECT nombre, apellido, fecha_inscripcion
   FROM estudiantes
@@ -68,7 +69,7 @@
   FROM CURRENT_DATE)
 
 # 9. Consulta: 
-`Asistencias de estudiantes con nombres de materias`
+## `Asistencias de estudiantes con nombres de materias`
 ## SQL:
   SELECT materias.nombre, asistencias.fecha, asistencias.presente
   FROM asistencias
@@ -77,7 +78,7 @@
   JOIN materias ON matriculas.materia_id = materias.id
 
 # 10. Consulta: 
-`Añadir nuevo estudiante Laura Torres de 17 años`
+## `Añadir nuevo estudiante Laura Torres de 17 años`
 ## SQL:
   INSERT INTO estudiantes (nombre, apellido, edad, email, telefono, direccion, fecha_inscripcion)
   VALUES ('Laura', 'Torres', 17, 'laura.torres@example.com', '123456789', 'Calle 123', CURRENT_DATE)
