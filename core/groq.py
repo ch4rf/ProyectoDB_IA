@@ -43,10 +43,8 @@ class GroqClient:
         if df.empty:
             return "No se encontraron resultados que coincidan con la consulta."
 
-        # ✅ ANÁLISIS MEJORADO DE COLUMNAS NUMÉRICAS
         numeric_cols = df.select_dtypes(include=[np.number]).columns
 
-        # ✅ FORZAR DETECCIÓN DE COLUMNAS CRÍTICAS
         critical_numeric_cols = ['calificacion', 'promedio', 'edad', 'creditos', 'monto', 'experiencia_anos']
         for col in critical_numeric_cols:
             if col in df.columns and col not in numeric_cols:
@@ -57,7 +55,6 @@ class GroqClient:
                 except Exception as e:
                     st.warning(f"No se pudo convertir {col} a numérico: {e}")
 
-        # ✅ CALCULAR ESTADÍSTICAS ROBUSTAS
         stats = {}
         for col in numeric_cols:
             data = pd.to_numeric(df[col], errors='coerce').dropna()
@@ -71,12 +68,10 @@ class GroqClient:
                     "total_rows": len(df)
                 }
 
-        # ✅ MUESTRA INTELIGENTE MEJORADA
         sample_size = min(5, len(df))
         
         df_for_sampling = df.copy()
         
-        # Asegurar conversión numérica para muestreo
         for col in df_for_sampling.columns:
             if df_for_sampling[col].dtype == 'object':
                 converted = pd.to_numeric(df_for_sampling[col], errors='coerce')
@@ -84,9 +79,7 @@ class GroqClient:
                     df_for_sampling[col] = converted
 
         try:
-            # Estrategia de muestreo balanceado
             if 'calificacion' in df.columns and pd.api.types.is_numeric_dtype(df_for_sampling.get('calificacion')):
-                # Tomar mejores y peores para análisis balanceado
                 top_samples = df_for_sampling.nlargest(sample_size // 2, 'calificacion')
                 bottom_samples = df_for_sampling.nsmallest(sample_size // 2, 'calificacion')
                 df_sample = pd.concat([top_samples, bottom_samples]).drop_duplicates()
