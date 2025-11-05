@@ -1,4 +1,4 @@
-## Agente IA para Sistema Escolar (Streamlit + PostgreSQL)
+# Agente IA para Sistema Escolar (Streamlit + PostgreSQL)
 Servicio web que recibe consultas en español, las transforma a SQL con Groq y ejecuta en PostgreSQL.
 
 Incluye interfaz Streamlit para interactuar con la base de datos escolar.
